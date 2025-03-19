@@ -7,6 +7,9 @@
 - Lightweight and easy to use.
 - Simple local server setup.
 
+📲 Download on Google Play: https://play.google.com/store/apps/details?id=com.sasinduprasad.pockethost
+
+
 ## Screenshots:
 
 <div style="display: flex; flex-wrap: wrap; gap: 10px;">
