@@ -26,7 +26,6 @@ class ServerViewModel : ViewModel() {
     private var uptimeTimer: Job? = null
     private var startTime: Long = 0
 
-    // Server Stats
     private val _totalRequests = MutableStateFlow(0)
     val totalRequests: StateFlow<Int> = _totalRequests.asStateFlow()
 
