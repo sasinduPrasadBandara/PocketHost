@@ -38,19 +38,16 @@ public class AndroidWebServer extends NanoHTTPD {
     public Response serve(IHTTPSession session) {
         long requestStartTime = System.currentTimeMillis();
         String uri = session.getUri();
-        Log.i("check", "URI requested: " + uri);
+//        Log.i("check", "URI requested: " + uri);
         Method method = session.getMethod();
 
-        // Read cookies
-        CookieHandler cookies = new CookieHandler(session.getHeaders());
-        String sessionId = cookies.read("SESSION_ID");
-
-        // Generate new session ID if not present
-        if (sessionId == null) {
-            sessionId = UUID.randomUUID().toString();
-        }
-
         Response response;
+
+        if(uri.endsWith("html")){
+            long requestEndTime = System.currentTimeMillis();
+            serverViewModel.recordRequest(requestStartTime, requestEndTime);
+//        Log.i("check", "Recorded request from: " + uri);
+        }
 
         // Handle the file upload (POST request)
         if (Method.POST.equals(method)) {
@@ -109,19 +106,9 @@ public class AndroidWebServer extends NanoHTTPD {
             } else {
                 response = newFixedLengthResponse(Response.Status.NOT_FOUND, MIME_HTML, "<h1>404 Not Found</h1>");
             }
-
-
         }
 
 
-        long requestEndTime = System.currentTimeMillis();
-        serverViewModel.recordRequest(requestStartTime, requestEndTime);
-        Log.i("check", "Recorded request from: " + uri);
-
-        // Set session cookie
-        cookies.set("SESSION_ID", sessionId, 1);
-        cookies.unloadQueue(response);
-        long timestamp = System.currentTimeMillis();
 
 
         return response;
