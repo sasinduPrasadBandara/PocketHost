@@ -68,6 +68,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
+import java.net.Inet4Address
+import java.net.NetworkInterface
+import java.util.Collections
 import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -274,11 +277,12 @@ fun HomeScreen(context: Context, navigateToProjectInfo:(projectName:String)->Uni
                                         }
                                     }
 
+                                    val localIp = getLocalIpAddress() ?: "127.0.0.1"
                                     Button(
                                         onClick = {
                                             val intent = Intent(
                                                 Intent.ACTION_VIEW,
-                                                Uri.parse("http://192.168.8.185:8080/$name" + "/index.html")
+                                                Uri.parse("http://$localIp:8080/$name/index.html")
                                             )
                                             context.startActivity(intent)
                                         }, colors = ButtonDefaults.buttonColors(
@@ -309,6 +313,23 @@ fun HomeScreen(context: Context, navigateToProjectInfo:(projectName:String)->Uni
 
     }
 
+}
+
+fun getLocalIpAddress(): String? {
+    try {
+        val interfaces = NetworkInterface.getNetworkInterfaces()
+        for (networkInterface in Collections.list(interfaces)) {
+            val addresses = networkInterface.inetAddresses
+            for (address in Collections.list(addresses)) {
+                if (!address.isLoopbackAddress && address is Inet4Address) {
+                    return address.hostAddress // Returns local IPv4 address
+                }
+            }
+        }
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+    return null
 }
 
 fun getProjectFolders(context: Context): List<Pair<String, File?>> {
