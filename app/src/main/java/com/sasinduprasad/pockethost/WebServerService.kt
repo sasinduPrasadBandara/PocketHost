@@ -129,7 +129,7 @@ private fun startServer() {
 
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("Web Server Running")
-            .setContentText("Server running on port ${server?.listeningPort}")
+            .setContentText("Server running on port 8080")
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentIntent(pendingIntent)
             .build()
