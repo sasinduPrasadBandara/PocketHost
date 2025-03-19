@@ -198,11 +198,12 @@ fun ProjectInfoScreen(navController: NavController, onBackPress: () -> Unit) {
                                 }
                             }
 
+                            val localIp = getLocalIpAddress() ?: "127.0.0.1"
                             Button(
                                 onClick = {
                                     val intent = Intent(
                                         Intent.ACTION_VIEW,
-                                        Uri.parse("http://192.168.8.185:8080/${uiState.projectName}" + "/index.html")
+                                        Uri.parse("http://$localIp:8080/${uiState.projectName}/index.html")
                                     )
                                     context.startActivity(intent)
                                 }, colors = ButtonDefaults.buttonColors(
